@@ -10,21 +10,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URI;
-import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.Buffer;
 
 @CrossOrigin
 @Component
 @Controller
 public class Misc {
-    @ResponseBody
+
     @RequestMapping("/")
     public String getMisc() {
-        return "Misc";
+        return "h1/index";
     }
-    @RequestMapping("/download")
+    @RequestMapping("/download2")
     public void proxydownload(String url, String method,HttpServletRequest request, HttpServletResponse response)throws Exception {
         HttpRequest treq;
         if ("POST".equals(method)) {
@@ -44,13 +41,14 @@ public class Misc {
             System.out.println(len);
         }
     }
-    @RequestMapping("/download2")
+    @RequestMapping("/download")
     public void download2(@RequestParam("url")String url, String method,HttpServletRequest request, HttpServletResponse response)throws Exception {
         url=URLDecoder.decode(url, "utf-8");
         //获取文件名
-        System.out.println(url);
         String fileName = url.substring(url.lastIndexOf("/") + 1);
+        System.out.println(fileName);
         proxyutil.proxyUrlFile(response, url, null, fileName);
     }
+
 
 }

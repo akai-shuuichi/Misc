@@ -1,0 +1,126 @@
+
+<html lang="en" xmlns:th="http:www.thymeleaf.org">
+<head>
+  <title>外网资源下载加速</title>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+  <div id="app">
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+      background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+      <el-menu-item index="1">外网资源下载加速</el-menu-item>
+    </el-menu>
+  </div>
+  <div id="app1">
+    <el-main>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>下载</span>
+        </div>
+        <div class="item">
+          <el-form ref="form" :model="form" label-width="80px" :rules="rules" >
+            <el-form-item label="URL" prop="url" required>
+              <el-input v-model="form.url"></el-input>
+            </el-form-item>
+            <el-form-item label="方法" required>
+              <el-select v-model="form.method" placeholder="GET">
+                <el-option label="POST" value="1"></el-option>
+                <el-option label="GET" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="线路">
+              <el-select v-model="form.server">
+                <el-option label="线路一" value="0"></el-option>
+                <el-option label="线路二" value="1"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Headers">
+              <el-input type="textarea" v-model="form.headers"></el-input>
+            </el-form-item>
+            <el-form-item label="Data">
+              <el-input type="textarea" v-model="form.data"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">下载</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-card>
+      <br />
+      <br />
+      
+    </el-main>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript" src="https://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!',
+    activeIndex: '1',
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
+  },
+})
+  var app1 = new Vue({
+  el: '#app1',
+  data: {
+    message: 'Hello Vue!',
+    form:{
+      url:'',
+      method:'GET',
+      server:'0',
+      headers:'',
+      data:''
+    },
+    rules: {
+      url: [
+        { required: true, message: '请输入URL', trigger: 'blur' },
+      ],
+      method: [
+        { required: true, message: '请选择方法', trigger: 'blur' },
+      ],
+      server: [
+        { required: true, message: '请选择线路', trigger: 'blur' },
+      ],
+      headers: [
+        { required: true, message: '请输入Headers', trigger: 'blur' },
+      ],
+      data: [
+        { required: true, message: '请输入Data', trigger: 'blur' },
+      ],
+    },
+    
+  },
+  methods:{
+    onSubmit:function(){
+      if(this.form.url==''){
+        this.$message({
+          message: '请输入URL',
+          type: 'error'
+        });
+        
+      }
+      if(this.form.method==''){
+        this.$message({
+          message: '请选择方法',
+          type: 'error'
+        });
+        
+      }
+      
+      let serverlist=['download','download2'];
+      let next=location.href+serverlist[this.form.server]+"?url="+encodeURIComponent(this.form.url)+"&method="+this.form.method+"&headers="+this.form.headers+"&data="+this.form.data;
+      window.open(next);
+    }
+  }
+})
+</script>
+
+</html>

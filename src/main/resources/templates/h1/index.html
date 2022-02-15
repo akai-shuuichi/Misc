@@ -34,6 +34,7 @@
               <el-select v-model="form.server">
                 <el-option label="线路一" value="0"></el-option>
                 <el-option label="线路二" value="1"></el-option>
+                <el-option label="线路三" value="2"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="Headers">
@@ -77,7 +78,7 @@ var app = new Vue({
       method:'GET',
       server:'0',
       headers:'',
-      data:''
+      data:'',
     },
     rules: {
       url: [
@@ -96,11 +97,11 @@ var app = new Vue({
         { required: true, message: '请输入Data', trigger: 'blur' },
       ],
     },
-    
+
   },
   methods:{
     onSubmit:function(){
-      if(this.form.url==''){
+      if(this.form.url===''){
         this.$message({
           message: '请输入URL',
           type: 'error'
@@ -115,8 +116,8 @@ var app = new Vue({
         
       }
       
-      let serverlist=['download','download2'];
-      let next=location.href+serverlist[this.form.server]+"?url="+encodeURIComponent(this.form.url)+"&method="+this.form.method+"&headers="+this.form.headers+"&data="+this.form.data;
+      let serverlist=[location.href+'download',location.href+'download2','https://wispy-hall-64eb.928926035.workers.dev/'];
+      let next=serverlist[this.form.server]+"?url="+encodeURIComponent(this.form.url)+"&method="+this.form.method+"&headers="+this.form.headers+"&data="+this.form.data;
       window.open(next);
     }
   }
